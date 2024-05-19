@@ -224,7 +224,7 @@ class _TutorialScreen1State extends State<TutorialScreen1> {
         children: [
           application,
           Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -236,8 +236,12 @@ class _TutorialScreen1State extends State<TutorialScreen1> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
+                  overlayColor: Colors.transparent,
+                  foregroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  iconColor: Colors.transparent,
                   padding: EdgeInsets.zero,
-                  minimumSize: Size(50, 50),
+                  minimumSize: Size(200, 200),
                 ),
               ),
             ),
@@ -286,6 +290,8 @@ class _TutorialScreen2State extends State<TutorialScreen2> {
             ),
           ),
         ],
+        shape: ShapeLightFocus.RRect,
+        radius: 5,
       ),
     );
 
@@ -297,6 +303,7 @@ class _TutorialScreen2State extends State<TutorialScreen2> {
       onFinish: _onTutorialFinish,
       onClickTarget: _onClickTarget,
       onSkip: _onClickSkip,
+      textStyleSkip: TextStyle(color: Colors.black),
     ).show(context: context);
   }
 
@@ -321,7 +328,7 @@ class _TutorialScreen2State extends State<TutorialScreen2> {
         children: [
           application,
           Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -333,8 +340,9 @@ class _TutorialScreen2State extends State<TutorialScreen2> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
+                  overlayColor: Colors.transparent,
                   padding: EdgeInsets.zero,
-                  minimumSize: Size(50, 50),
+                  minimumSize: Size(1000, 150),
                 ),
               ),
             ),
