@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber.shade900,
+        backgroundColor: Colors.deepOrange,
         title: Text('Make fire but be cautious not to hurt yourself'),
       ),
       drawer: SizedBox(
@@ -109,26 +109,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Image(image: lexic.lexicitems[index].imageprovider),
                   Text(lexic.lexicitems[index].name),
+                  ListView.builder(
+                    itemCount: lexic.lexicitems[index].icons.length,
+                    itemBuilder: (BuildContext context, int ind_2) {
+                      return Icon(lexic.lexicitems[index].icons[ind_2]);
+                    }
+                  ),
                 ],
               );
             }
           ),
-            //(
-            //children: [
-              //SizedBox(
-              //  height: MediaQuery.of(context).size.height * 0.25,
-              //  child: DrawerHeader(
-              //    decoration: BoxDecoration(
-              //        color: Colors.deepOrange
-              //    ),
-              //    child: Center(
-              //      child: Text('Lexic', style: TextStyle(fontWeight: FontWeight.bold)),
-              //    ),
-              //  ),
-              //),
-
-            //],
-          //),
         ),
       ),
       body: SizedBox(
@@ -166,14 +156,16 @@ class Item {
     required this.name,
     required this.imageprovider,
     required this.color,
-    required this.smoke,
+    required this.intensity,
     required this.height,
     required this.width,
+    required this.icons,
   });
   final String name;
   final ImageProvider imageprovider;
   final Colors color;
-  final Colors smoke;
+  final int intensity;
   final int height;
   final int width;
+  final List<IconData> icons;
 }
