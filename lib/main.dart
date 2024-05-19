@@ -10,7 +10,7 @@ List<Item> itemList = [
       color: Colors.transparent,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/lit.png"),
+      imagePath: "assets/images/lit.png",
       icons: [
         Icons.local_fire_department
       ],
@@ -22,7 +22,7 @@ List<Item> itemList = [
       color: Colors.transparent,
       height: 0,
       width: 0.25,
-      imageProvider: AssetImage("assets/images/log.png"),
+      imagePath: "assets/images/log.png",
       icons: [
       ],
       intensity: 0,
@@ -33,7 +33,7 @@ List<Item> itemList = [
       color: Colors.transparent,
       height: 0.25,
       width: 0,
-      imageProvider: AssetImage("assets/images/branch.png"),
+      imagePath: "assets/images/branch.png",
       icons: [
       ],
       intensity: 0,
@@ -44,7 +44,7 @@ List<Item> itemList = [
       color: Colors.yellow,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/jaune.png"),
+      imagePath: "assets/images/jaune.png",
       icons: [
       ],
       intensity: 0,
@@ -55,7 +55,7 @@ List<Item> itemList = [
       color: Colors.blue,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/bleu.png"),
+      imagePath: "assets/images/bleu.png",
       icons: [
       ],
       intensity: 0,
@@ -66,7 +66,7 @@ List<Item> itemList = [
       color: Colors.green,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/landry-vert.png"),
+      imagePath: "assets/images/landry-vert.png",
       icons: [
       ],
       intensity: 0,
@@ -77,7 +77,7 @@ List<Item> itemList = [
       color: Colors.red,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/rouge.png"),
+      imagePath: "assets/images/rouge.png",
       icons: [
       ],
       intensity: 0,
@@ -88,7 +88,7 @@ List<Item> itemList = [
       color: Colors.purple,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/violet.png"),
+      imagePath: "assets/images/violet.png",
       icons: [
       ],
       intensity: 0,
@@ -99,7 +99,7 @@ List<Item> itemList = [
       color: Colors.transparent,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/r.png"),
+      imagePath: "assets/images/r.png",
       icons: [
       ],
       intensity: 1,
@@ -110,7 +110,7 @@ List<Item> itemList = [
       color: Colors.transparent,
       height: 40,
       width: 25,
-      imageProvider: AssetImage("assets/images/boom.png"),
+      imagePath: "assets/images/boom.png",
       icons: [
       ],
       intensity: 75,
@@ -121,7 +121,7 @@ List<Item> itemList = [
       color: Colors.pink,
       height: 1,
       width: 1,
-      imageProvider: AssetImage("assets/images/cursed.png"),
+      imagePath: "assets/images/cursed.png",
       icons: [
       ],
       intensity: 0,
@@ -260,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     } else {
       return SizedBox(
-        child: Image(image: lexic.lexicItems[index].imageProvider),
+        child: Image.asset(lexic.lexicItems[index].imagePath),
       );
     }
   }
@@ -292,7 +292,6 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.deepOrange.withOpacity(1),
           height: MediaQuery.of(context).size.height * 0.3 + 1,
           width: MediaQuery.of(context).size.width * 0.3 + 1,
-
           child: GameWidget<MyGame>(
             game: result,
           ),
@@ -303,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBottomNavBar() {
     return Padding(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(50),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.10,
         width: MediaQuery.of(context).size.width,
@@ -332,16 +331,10 @@ class _MyHomePageState extends State<MyHomePage> {
       feedback: SizedBox(
           height: itemHeight,
           width: itemWidth,
-          child: Image(
-            image: item.imageProvider,
-          )
+          child: Image.asset(item.imagePath),
       ),
-      childWhenDragging: Image(
-        image: item.imageProvider,
-      ),
-      child: Image(
-        image: item.imageProvider,
-      ),
+      childWhenDragging: Image.asset(item.imagePath),
+      child: Image.asset(item.imagePath),
     );
   }
 
@@ -365,7 +358,7 @@ class Lexic {
 
     Item test = Item(
       name: "test",
-      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      imagePath: "assets/images/welcome_rick.png",
       color: Colors.red,
       intensity: 5,
       width: 10,
@@ -387,7 +380,7 @@ class Lexic {
 class Item {
   Item ({
     required this.name,
-    required this.imageProvider,
+    required this.imagePath,
     required this.color,
     required this.intensity,
     required this.height,
@@ -396,7 +389,7 @@ class Item {
     required this.iconDisplay,
   });
   final String name;
-  final ImageProvider imageProvider;
+  final String imagePath;
   final Color color;
   final int intensity;
   final double height;
