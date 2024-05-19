@@ -227,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
     required double? itemWidth
   }) {
     return Draggable<Item>(
-      data: itemList[0],
+      data: item,
       feedback: SizedBox(
           height: itemHeight,
           width: itemWidth,
@@ -246,6 +246,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _updateStats(DragTargetDetails<Item> item) {
     myGame.flame.height += item.data.height;
+    myGame.flame.width += item.data.width;
+    myGame.flame.intensity += item.data.intensity;
+
+    int red = (myGame.flame.color.red + item.data.color.red) ~/ 2;
+    int green = (myGame.flame.color.green + item.data.color.green) ~/ 2;
+    int blue = (myGame.flame.color.blue + item.data.color.blue) ~/ 2;
+    myGame.flame.color =  Color.fromARGB(255, red, green, blue);
   }
 }
 
@@ -289,7 +296,7 @@ class Item {
   final String name;
   final ImageProvider imageProvider;
   final Color color;
-  final double intensity;
+  final int intensity;
   final double height;
   final double width;
   final List<IconData> icons;
