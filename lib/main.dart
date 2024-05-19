@@ -1,4 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+List<Item> itemList = [
+  Item(
+    name: "name",
+    color: Colors.blue,
+    height: 4,
+    width: 4,
+    imageProvider: AssetImage("assets/images/welcome_rick.png"),
+    icons: [
+      Icons.accessibility
+    ],
+    intensity: 5
+  ),
+  Item(
+      name: "name",
+      color: Colors.blue,
+      height: 4,
+      width: 4,
+      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      icons: [
+        Icons.accessibility,
+        Icons.abc,
+        Icons.abc,
+        Icons.abc,
+      ],
+      intensity: 5
+  )
+];
 
 void main() {
   runApp(const MyApp());
@@ -32,104 +62,165 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Lexic lexic = Lexic();
 
+  final GlobalKey _draggableKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
-        title: Text('Make fire but be cautious not to hurt yourself'),
-      ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height,
-        child: Drawer(
-          child: ListView(
-            children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
+      appBar: _buildAppBar(),
+      drawer: _buildLeftDrawer(),
+      endDrawer: _buildRightDrawer(),
+      body: _buildBody(),
+      bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
 
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.deepOrange
-                    ),
-                    child: Center(
-                      child: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ),
-              ListTile(
-                title: Text('Advancement'),
-              ),
-              ListTile(
-                title: Text('Settings'),
-              ),
-              ListTile(
-                title: Text('Help'),
-              ),
-              ListTile(
-                title: Text('Credits'),
-              ),
-            ],
-          ),
-        ),
-      ),
-      endDrawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.4,
-        height: MediaQuery.of(context).size.height,
-        child: Drawer(
-          child: ListView.builder(
-            itemCount: lexic.lexicitems.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                children: [
-                  Image(image: lexic.lexicitems[index].imageprovider),
-                  Text(lexic.lexicitems[index].name),
-                  ListView.builder(
-                    itemCount: lexic.lexicitems[index].icons.length,
-                    itemBuilder: (BuildContext context, int ind_2) {
-                      return Icon(lexic.lexicitems[index].icons[ind_2]);
-                    }
-                  ),
-                ],
-              );
-            }
-          ),
-        ),
-      ),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        width: MediaQuery.of(context).size.width,
-      ),
-      bottomNavigationBar: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.10,
-        width: MediaQuery.of(context).size.width,
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.deepOrange,
+      title: Text('Make fire but be cautious not to hurt yourself'),
+    );
+  }
+
+  Widget _buildLeftDrawer() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.3,
+      height: MediaQuery.of(context).size.height,
+      child: Drawer(
         child: ListView(
-          scrollDirection: Axis.horizontal,
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.25,
+
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                    color: Colors.deepOrange
+                ),
+                child: Center(
+                  child: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Advancement'),
+            ),
+            ListTile(
+              title: Text('Settings'),
+            ),
+            ListTile(
+              title: Text('Help'),
+            ),
+            ListTile(
+              title: Text('Credits'),
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildRightDrawer() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height,
+      child: Drawer(
+        child: ListView.builder(
+            itemCount: lexic.lexicItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: [
+                  Image(image: lexic.lexicItems[index].imageProvider),
+                  Text(lexic.lexicItems[index].name),
+                  ListView.builder(
+                      itemCount: lexic.lexicItems[index].icons.length,
+                      itemBuilder: (BuildContext context, int ind_2) {
+                        return Icon(lexic.lexicItems[index].icons[ind_2]);
+                      }
+                  ),
+                ],
+              );
+            }
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavBar() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.10,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: itemList.length,
+          itemBuilder:  (BuildContext context, int index) {
+            return _buildDraggableItem (
+                item: itemList[index]
+            );
+          }
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: MediaQuery.of(context).size.width,
+    );
+  }
+
+  Widget _buildDraggableItem({
+    required Item item
+  }) {
+    return LongPressDraggable<Item>(
+      data: item,
+      dragAnchorStrategy: pointerDragAnchorStrategy,
+      feedback: DraggingListItem(
+        dragKey: _draggableKey,
+        imageProvider: item.imageProvider,
+      ),
+      child: MenuListItem(
+        imageProvider: item.imageProvider
+      )
+    );
+  }
+}
+
+class MenuListItem extends StatelessWidget {
+  const MenuListItem({
+    super.key,
+    required this.imageProvider
+  });
+  final ImageProvider imageProvider;
+}
+
+class DraggingListItem extends StatelessWidget {
+  const DraggingListItem({
+    super.key,
+    required this.dragKey,
+    required this.imageProvider
+  });
+
+  final GlobalKey dragKey;
+  final ImageProvider imageProvider;
 }
 
 class Lexic {
-  var lexicitems = <Item>[];
+  var lexicItems = <Item>[];
 
   Lexic();
 
-  void newlexicitem(Item newitem) {
-    if (!lexicitems.contains(newitem)) {
-      lexicitems.add(newitem);
+  void newLexicItem(Item newItem) {
+    if (!lexicItems.contains(newItem)) {
+      lexicItems.add(newItem);
     }
   }
 }
 
 @immutable
 class Item {
-  const Item ({
+  Item ({
     required this.name,
-    required this.imageprovider,
+    required this.imageProvider,
     required this.color,
     required this.intensity,
     required this.height,
@@ -137,8 +228,8 @@ class Item {
     required this.icons,
   });
   final String name;
-  final ImageProvider imageprovider;
-  final Colors color;
+  final ImageProvider imageProvider;
+  final Color color;
   final int intensity;
   final int height;
   final int width;
