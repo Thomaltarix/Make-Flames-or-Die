@@ -74,10 +74,10 @@ class Flame {
 
     // Add randomness to the color
     int colorShift = 75;
-    double colorRandomShift = math.Random().nextInt(colorShift) as double;
-    double red = (color.red + colorRandomShift - colorShift ~/ 2);
-    double green = (color.green + colorRandomShift - colorShift ~/ 2);
-    double blue = (color.blue + colorRandomShift - colorShift ~/ 2);
+    int colorRandomShift = math.Random().nextInt(colorShift);
+    int red = (color.red + colorRandomShift - colorShift ~/ 2);
+    int green = (color.green + colorRandomShift - colorShift ~/ 2);
+    int blue = (color.blue + colorRandomShift - colorShift ~/ 2);
     // Darken color the farthest they are from the middle
 
     // Ensure color values are within valid range
@@ -85,7 +85,7 @@ class Flame {
     green = green.clamp(0, 255);
     blue = blue.clamp(0, 255);
 
-    Color randomColor = Color.fromARGB(color.alpha, red as int, green as int, blue as int);
+    Color randomColor = Color.fromARGB(color.alpha, red, green, blue);
 
     return AcceleratedParticle(
       lifespan: lifespan,
