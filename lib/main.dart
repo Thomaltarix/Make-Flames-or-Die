@@ -7,10 +7,9 @@ List<Item> itemList = [
     height: 4,
     width: 4,
     imageProvider: AssetImage("assets/images/welcome_rick.png"),
-    icons: [
-      Icons.accessibility
-    ],
-    intensity: 5
+    icons: [Icons.accessibility],
+    intensity: 5,
+    iconDisplay: false
   ),
   Item(
       name: "name",
@@ -24,13 +23,16 @@ List<Item> itemList = [
         Icons.abc,
         Icons.abc,
       ],
-      intensity: 5
+      intensity: 5,
+      iconDisplay: false
   )
 ];
 
 void main() {
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -123,24 +125,33 @@ class _MyHomePageState extends State<MyHomePage> {
       height: MediaQuery.of(context).size.height,
       child: Drawer(
         child: ListView.builder(
-            itemCount: lexic.lexicItems.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                children: [
-                  Image(image: lexic.lexicItems[index].imageProvider),
-                  Text(lexic.lexicItems[index].name),
-                  ListView.builder(
-                      itemCount: lexic.lexicItems[index].icons.length,
-                      itemBuilder: (BuildContext context, int ind_2) {
-                        return Icon(lexic.lexicItems[index].icons[ind_2]);
-                      }
-                  ),
-                ],
-              );
-            }
+          itemCount: lexic.lexicItems.length,
+          itemBuilder: (BuildContext context, int index) {
+
+            return InkWell(
+              onTap: () {
+                setState(() {
+                  lexic.lexicItems[index].iconDisplay = !lexic.lexicItems[index].iconDisplay;
+                });
+              },
+              child: _buildIconDisplay(index)
+            );
+          }
         ),
       ),
     );
+  }
+
+  Widget _buildIconDisplay(int index) {
+    if (lexic.lexicItems[index].iconDisplay) {
+      return SizedBox(
+        child: Text(lexic.lexicItems[index].name),
+      );
+    } else {
+      return SizedBox(
+        child: Image(image: lexic.lexicItems[index].imageProvider),
+      );
+    }
   }
 
   Widget _buildBody() {
@@ -226,7 +237,21 @@ class DraggingListItem extends StatelessWidget {
 class Lexic {
   var lexicItems = <Item>[];
 
-  Lexic();
+  Lexic(){
+
+    Item test = Item(
+      name: "test",
+      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      color: Colors.red,
+      intensity: 5,
+      width: 10,
+      height: 10,
+      icons: [Icons.add, Icons.abc],
+      iconDisplay: false
+      );
+
+    lexicItems.add(test);
+  }
 
   void newLexicItem(Item newItem) {
     if (!lexicItems.contains(newItem)) {
@@ -235,7 +260,6 @@ class Lexic {
   }
 }
 
-@immutable
 class Item {
   Item ({
     required this.name,
@@ -245,6 +269,7 @@ class Item {
     required this.height,
     required this.width,
     required this.icons,
+    required this.iconDisplay,
   });
   final String name;
   final ImageProvider imageProvider;
@@ -253,4 +278,5 @@ class Item {
   final int height;
   final int width;
   final List<IconData> icons;
+  bool iconDisplay;
 }
