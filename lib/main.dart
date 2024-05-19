@@ -1,15 +1,19 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jam/myFlame.dart';
 
 List<Item> itemList = [
   Item(
-    name: "name",
-    color: Colors.blue,
-    height: 4,
-    width: 4,
-    imageProvider: AssetImage("assets/images/welcome_rick.png"),
-    icons: [Icons.accessibility],
-    intensity: 5,
-    iconDisplay: false
+      name: "name",
+      color: Colors.blue,
+      height: 0.2,
+      width: 4,
+      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      icons: [
+        Icons.accessibility
+      ],
+      intensity: 5,
+      iconDisplay: false
   ),
   Item(
       name: "name",
@@ -45,13 +49,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Home Page'),
+      home: MyHomePage(title: 'Flutter Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -62,7 +66,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Lexic lexic = Lexic();
 
-  final GlobalKey _draggableKey = GlobalKey();
+  double acceptedData = 0;
+  final MyGame myGame = MyGame();
 
   @override
   Widget build(BuildContext context) {
@@ -158,79 +163,71 @@ class _MyHomePageState extends State<MyHomePage> {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
       width: MediaQuery.of(context).size.width,
+      child: DragTarget<Item>(
+        builder: (
+            BuildContext context,
+            List<dynamic> accepted,
+            List<dynamic> rejected,
+            ) {
+          return GameWidget<MyGame>(
+            game: myGame,
+          );
+        },
+        onAcceptWithDetails: (DragTargetDetails<Item> item) { // Used to modify the Landry's algorithm values
+          setState(() {
+            _updateStats(item);
+          });
+        },
+      )
     );
   }
-  
+
   Widget _buildBottomNavBar() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.10,
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: itemList.length,
-          itemBuilder:  (BuildContext context, int index) {
-            return _buildDraggableItem (
-                item: itemList[index]
-            );
-          }
-      ),
+    return Padding(
+      padding: EdgeInsets.all(15),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.10,
+        width: MediaQuery.of(context).size.width,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: itemList.length,
+            itemBuilder:  (BuildContext context, int index) {
+              return _buildDraggableItem (
+                item: itemList[index],
+                itemHeight: MediaQuery.of(context).size.height * 0.10 ,
+                itemWidth: MediaQuery.of(context).size.height * 0.10
+              );
+            }
+        ),
+      )
     );
   }
 
   Widget _buildDraggableItem({
-    required Item item
+    required Item item,
+    required double? itemHeight,
+    required double? itemWidth
   }) {
-    return LongPressDraggable<Item>(
-      data: item,
-      dragAnchorStrategy: pointerDragAnchorStrategy,
-      feedback: DraggingListItem(
-        dragKey: _draggableKey,
-        imageProvider: item.imageProvider,
+    return Draggable<Item>(
+      data: itemList[0],
+      feedback: SizedBox(
+          height: itemHeight,
+          width: itemWidth,
+          child: Image(
+            image: item.imageProvider,
+          )
       ),
-      child: MenuListItem(
-        imageProvider: item.imageProvider
-      )
-    );
-  }
-}
-
-class MenuListItem extends StatelessWidget {
-  const MenuListItem({
-    super.key,
-    required this.imageProvider
-  });
-  final ImageProvider imageProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image(
-      image: imageProvider,
-    );
-  }
-}
-
-class DraggingListItem extends StatelessWidget {
-  const DraggingListItem({
-    super.key,
-    required this.dragKey,
-    required this.imageProvider
-  });
-
-  final GlobalKey dragKey;
-  final ImageProvider imageProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return FractionalTranslation(
-      translation: const Offset(-0.5, -0.5),
-      child: ClipRRect(
-        key: dragKey,
-        borderRadius: BorderRadius.circular(12),
-        child: Image(
-          image: imageProvider
-        )
+      childWhenDragging: Image(
+        image: item.imageProvider,
+      ),
+      child: Image(
+        image: item.imageProvider,
       ),
     );
+  }
+
+  void _updateStats(DragTargetDetails<Item> item) {
+    myGame.flame.height += item.data.height;
   }
 }
 
@@ -274,9 +271,9 @@ class Item {
   final String name;
   final ImageProvider imageProvider;
   final Color color;
-  final int intensity;
-  final int height;
-  final int width;
+  final double intensity;
+  final double height;
+  final double width;
   final List<IconData> icons;
   bool iconDisplay;
 }

@@ -29,7 +29,7 @@ class MyGame extends FlameGame {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    flame = Flame(height: 1, width: 1, color: Colors.green, intensity: 5);
+    flame = Flame(height: 1, width: 1, color: Colors.red, intensity: 5);
   }
 
   @override
@@ -39,7 +39,7 @@ class MyGame extends FlameGame {
     for (int i = 0; i < flame.intensity; i++) {
       add(ParticleSystemComponent(
         particle: flame.generateParticles(),
-        position: Vector2(200, 700),
+        position: Vector2(size.x / 2, size.y * 0.85)
       ));
     }
 
@@ -63,21 +63,6 @@ class Flame {
   Flame({required this.height, required this.width, required this.color, required this.intensity});
 
   AcceleratedParticle generateParticles() {
-    // Add randomness to the color
-    int colorShift = 75;
-    int colorRandomShift = math.Random().nextInt(colorShift);
-    int red = color.red + colorRandomShift - colorShift ~/ 2;
-    int green = color.green + colorRandomShift - colorShift ~/ 2;
-    int blue = color.blue + colorRandomShift - colorShift ~/ 2;
-
-    // Ensure color values are within valid range
-    red = red.clamp(0, 255);
-    green = green.clamp(0, 255);
-    blue = blue.clamp(0, 255);
-
-    Color randomColor = Color.fromARGB(color.alpha, red, green, blue);
-
-
     // Add randomness to the direction
     double direction = math.Random().nextDouble() * width - width / 2.0; // random value between -width/2 and width/2
 
@@ -86,6 +71,21 @@ class Flame {
 
     // Adjust lifespan based on direction
     double lifespan = height * (1 - (direction / width).abs()) * randomValueBetween(0.8, 1.2);
+
+    // Add randomness to the color
+    int colorShift = 75;
+    double colorRandomShift = math.Random().nextInt(colorShift) as double;
+    double red = (color.red + colorRandomShift - colorShift ~/ 2);
+    double green = (color.green + colorRandomShift - colorShift ~/ 2);
+    double blue = (color.blue + colorRandomShift - colorShift ~/ 2);
+    // Darken color the farthest they are from the middle
+
+    // Ensure color values are within valid range
+    red = red.clamp(0, 255);
+    green = green.clamp(0, 255);
+    blue = blue.clamp(0, 255);
+
+    Color randomColor = Color.fromARGB(color.alpha, red as int, green as int, blue as int);
 
     return AcceleratedParticle(
       lifespan: lifespan,
