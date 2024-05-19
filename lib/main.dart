@@ -143,6 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _buildBody() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: MediaQuery.of(context).size.width,
+    );
+  }
+  
   Widget _buildBottomNavBar() {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.10,
@@ -156,13 +163,6 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           }
       ),
-    );
-  }
-
-  Widget _buildBody() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
-      width: MediaQuery.of(context).size.width,
     );
   }
 
