@@ -193,15 +193,19 @@ class _ApplicationPageState extends State<ApplicationPage> {
             ),
             ListTile(
               title: Text('Advancement'),
+              onTap: (){},
             ),
             ListTile(
               title: Text('Settings'),
+              onTap: (){},
             ),
             ListTile(
               title: Text('Help'),
+              onTap: (){},
             ),
             ListTile(
               title: Text('Credits'),
+              onTap: (){},
             ),
           ],
         ),
