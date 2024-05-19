@@ -1,143 +1,12 @@
-import 'package:flame/extensions.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jam/myFlame.dart';
-import 'dart:math' as math;
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'ApplicationPage.dart';
 
-List<Item> itemList = [
-  Item(
-      name: "Matches",
-      color: Colors.transparent,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/lit.png",
-      icons: [
-        Icons.local_fire_department
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Logs",
-      color: Colors.transparent,
-      height: 0,
-      width: 0.25,
-      imagePath: "assets/images/log.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Branches",
-      color: Colors.transparent,
-      height: 0.25,
-      width: 0,
-      imagePath: "assets/images/branch.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Salt",
-      color: Colors.yellow,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/jaune.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Hand sanitizer",
-      color: Colors.blue,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/bleu.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Landry",
-      color: Colors.green,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/landry-vert.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Lithium battery",
-      color: Colors.red,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/rouge.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Fertilizer",
-      color: Colors.purple,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/violet.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Air",
-      color: Colors.transparent,
-      height: 0,
-      width: 0,
-      imagePath: "assets/images/r.png",
-      icons: [
-      ],
-      intensity: 1,
-      iconDisplay: false
-  ),
-  Item(
-      name: "Are you sure about that ?",
-      color: Colors.transparent,
-      height: 40,
-      width: 25,
-      imagePath: "assets/images/boom.png",
-      icons: [
-      ],
-      intensity: 75,
-      iconDisplay: false
-  ),
-  Item(
-      name: "You already know",
-      color: Colors.pink,
-      height: 1,
-      width: 1,
-      imagePath: "assets/images/cursed.png",
-      icons: [
-      ],
-      intensity: 0,
-      iconDisplay: false
-  )
-];
-
-
-int randomIntValue(int max) {
-  return math.Random().nextInt(max);
-}
+var application = ApplicationPage(title: 'Flutter Page');
 
 void main() {
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -150,250 +19,328 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Flutter Home Page'),
+      home: const TutorialHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+class TutorialHomePage extends StatefulWidget {
+  const TutorialHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<TutorialHomePage> createState() => _TutorialHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  Lexic lexic = Lexic();
+class _TutorialHomePageState extends State<TutorialHomePage> {
+  bool _showOverlay = true;
 
-  double acceptedData = 0;
-  final MyGame myGame = MyGame(1,  1, Colors.red, 3);
-  final MyGame result = MyGame(randomValueBetween(0.5, 5), randomValueBetween(0.5, 5), Color.fromARGB(255, randomIntValue(255), randomIntValue(255), randomIntValue(255)), randomIntValue(4) + 1);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _hideOverlayAndStartTutorial() {
+    setState(() {
+      _showOverlay = false;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TutorialManager().currentScreen),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: _buildAppBar(),
-          drawer: _buildLeftDrawer(),
-          endDrawer: _buildRightDrawer(),
-          body: _buildBody(),
-          bottomNavigationBar: _buildBottomNavBar(),
-        ),
-      ],
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.deepOrange,
-      title: Text('Make fire but be cautious not to hurt yourself'),
-    );
-  }
-
-  Widget _buildLeftDrawer() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height,
-      child: Drawer(
-        child: ListView(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.25,
-
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                    color: Colors.deepOrange
-                ),
-                child: Center(
-                  child: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
+    return Scaffold(
+      body: Stack(
+        children: [
+          application,
+          if (_showOverlay)
+            GestureDetector(
+              onTap: _hideOverlayAndStartTutorial,
+              child: Container(
+                color: Colors.black54,
+                width: double.infinity,
+                height: double.infinity,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Image.asset(
+                        'assets/images/welcome_rick.png',
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: 10,
+                          bottom: MediaQuery.of(context).size.height * 0.5,
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 5,
+                              offset: Offset(3, 3),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          "The Olympic Games are coming so fast!\nHelp us create and keep the flame alive!",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            ListTile(
-              title: Text('Advancement'),
-            ),
-            ListTile(
-              title: Text('Settings'),
-            ),
-            ListTile(
-              title: Text('Help'),
-            ),
-            ListTile(
-              title: Text('Credits'),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildRightDrawer() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height,
-      child: Drawer(
-        child: ListView.builder(
-          itemCount: lexic.lexicItems.length,
-          itemBuilder: (BuildContext context, int index) {
+class TutorialManager {
+  static final TutorialManager _instance = TutorialManager._internal();
+  factory TutorialManager() => _instance;
 
-            return InkWell(
-              onTap: () {
-                setState(() {
-                  lexic.lexicItems[index].iconDisplay = !lexic.lexicItems[index].iconDisplay;
-                });
-              },
-              child: _buildIconDisplay(index)
-            );
-          }
-        ),
-      ),
-    );
-  }
+  int _currentStep = 0;
+  final List<Widget> _tutorialScreens = [
+    const TutorialScreen1(),
+    const TutorialScreen2(),
+    application,
+  ];
 
-  Widget _buildIconDisplay(int index) {
-    if (lexic.lexicItems[index].iconDisplay) {
-      return SizedBox(
-        child: Text(lexic.lexicItems[index].name),
+  TutorialManager._internal();
+
+  int get currentStep => _currentStep;
+  int get totalSteps => _tutorialScreens.length;
+  Widget get currentScreen => _tutorialScreens[_currentStep];
+
+  void nextStep(BuildContext context) {
+    if (_currentStep < totalSteps - 1) {
+      _currentStep++;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => currentScreen),
       );
     } else {
-      return SizedBox(
-        child: Image.asset(lexic.lexicItems[index].imagePath),
-      );
+      reset();
     }
   }
 
-  Widget _buildBody() {
-    return Stack(
-      children: [
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        width: MediaQuery.of(context).size.width,
-        child: DragTarget<Item>(
-          builder: (
-            BuildContext context,
-            List<dynamic> accepted,
-            List<dynamic> rejected,
-          ) {
-            return GameWidget<MyGame>(
-              game: myGame,
-            );
-          },
-            onAcceptWithDetails: (DragTargetDetails<Item> item) {
-              setState(() {
-                _updateStats(item);
-              });
-            },
-          )
-        ),
-        Container(
-          color: Colors.deepOrange.withOpacity(1),
-          height: MediaQuery.of(context).size.height * 0.3 + 1,
-          width: MediaQuery.of(context).size.width * 0.3 + 1,
-          child: GameWidget<MyGame>(
-            game: result,
+  void reset() {
+    _currentStep = 0;
+  }
+}
+
+class TutorialScreen1 extends StatefulWidget {
+  const TutorialScreen1({super.key});
+
+  @override
+  _TutorialScreen1State createState() => _TutorialScreen1State();
+}
+
+class _TutorialScreen1State extends State<TutorialScreen1> {
+  List<TargetFocus> targets = [];
+  GlobalKey keyButton = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+  }
+
+  void _afterLayout(_) {
+    _showTutorial();
+  }
+
+  void _showTutorial() {
+    targets.clear();
+    targets.add(
+      TargetFocus(
+        identify: "Target 1",
+        keyTarget: keyButton,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "Your goal is to match the flame shown here.",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return Padding(
-      padding: EdgeInsets.all(50),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.10,
-        width: MediaQuery.of(context).size.width,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: itemList.length,
-            itemBuilder:  (BuildContext context, int index) {
-              return _buildDraggableItem (
-                item: itemList[index],
-                itemHeight: MediaQuery.of(context).size.height * 0.10 ,
-                itemWidth: MediaQuery.of(context).size.height * 0.10
-              );
-            }
-        ),
-      )
-    );
-  }
-
-  Widget _buildDraggableItem({
-    required Item item,
-    required double? itemHeight,
-    required double? itemWidth
-  }) {
-    return Draggable<Item>(
-      data: item,
-      feedback: SizedBox(
-          height: itemHeight,
-          width: itemWidth,
-          child: Image.asset(item.imagePath),
+        ],
       ),
-      childWhenDragging: Image.asset(item.imagePath),
-      child: Image.asset(item.imagePath),
+    );
+
+    TutorialCoachMark(
+      targets: targets,
+      colorShadow: Colors.black,
+      textSkip: "SKIP",
+      paddingFocus: 10,
+      onFinish: _onTutorialFinish,
+      onClickTarget: _onClickTarget,
+      onSkip: _onClickSkip,
+    ).show(context: context);
+  }
+
+  void _onTutorialFinish() {
+    TutorialManager().nextStep(context);
+  }
+
+  void _onClickTarget(TargetFocus target) {
+    TutorialManager().nextStep(context);
+  }
+
+  bool _onClickSkip() {
+    TutorialManager().reset();
+    Navigator.pop(context);
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          application,
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                key: keyButton,
+                onPressed: () {
+                  // Button action
+                },
+                child: const Text(''),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(50, 50),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
-
-  void _updateStats(DragTargetDetails<Item> item) {
-    myGame.flame.height += item.data.height;
-    myGame.flame.width += item.data.width;
-    myGame.flame.intensity += item.data.intensity;
-    if (item.data.color != Colors.transparent) {
-      int red = (myGame.flame.color.red + item.data.color.red) ~/ 2;
-      int green = (myGame.flame.color.green + item.data.color.green) ~/ 2;
-      int blue = (myGame.flame.color.blue + item.data.color.blue) ~/ 2;
-      myGame.flame.color =  Color.fromARGB(255, red, green, blue);
-    }
-  }
 }
 
-class Lexic {
-  var lexicItems = <Item>[];
+class TutorialScreen2 extends StatefulWidget {
+  const TutorialScreen2({super.key});
 
-  Lexic(){
-
-    Item test = Item(
-      name: "test",
-      imagePath: "assets/images/welcome_rick.png",
-      color: Colors.red,
-      intensity: 5,
-      width: 10,
-      height: 10,
-      icons: [Icons.add, Icons.abc],
-      iconDisplay: false
-      );
-
-    lexicItems.add(test);
-  }
-
-  void newLexicItem(Item newItem) {
-    if (!lexicItems.contains(newItem)) {
-      lexicItems.add(newItem);
-    }
-  }
+  @override
+  _TutorialScreen2State createState() => _TutorialScreen2State();
 }
 
-class Item {
-  Item ({
-    required this.name,
-    required this.imagePath,
-    required this.color,
-    required this.intensity,
-    required this.height,
-    required this.width,
-    required this.icons,
-    required this.iconDisplay,
-  });
-  final String name;
-  final String imagePath;
-  final Color color;
-  final int intensity;
-  final double height;
-  final double width;
-  final List<IconData> icons;
-  bool iconDisplay;
+class _TutorialScreen2State extends State<TutorialScreen2> {
+  List<TargetFocus> targets = [];
+  GlobalKey keyButton = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+  }
+
+  void _afterLayout(_) {
+    _showTutorial();
+  }
+
+  void _showTutorial() {
+    targets.clear();
+    targets.add(
+      TargetFocus(
+        identify: "Target 1",
+        keyTarget: keyButton,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "Using the materials here!",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    TutorialCoachMark(
+      targets: targets,
+      colorShadow: Colors.black,
+      textSkip: "SKIP",
+      paddingFocus: 10,
+      onFinish: _onTutorialFinish,
+      onClickTarget: _onClickTarget,
+      onSkip: _onClickSkip,
+    ).show(context: context);
+  }
+
+  void _onTutorialFinish() {
+    TutorialManager().nextStep(context);
+  }
+
+  void _onClickTarget(TargetFocus target) {
+    TutorialManager().nextStep(context);
+  }
+
+  bool _onClickSkip() {
+    TutorialManager().reset();
+    Navigator.pop(context);
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          application,
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                key: keyButton,
+                onPressed: () {
+                  // Button action
+                },
+                child: const Text(''),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(50, 50),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
