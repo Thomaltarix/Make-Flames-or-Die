@@ -6,48 +6,129 @@ import 'dart:math' as math;
 
 List<Item> itemList = [
   Item(
-      name: "name",
+      name: "Matches",
       color: Colors.transparent,
-      height: 0.2,
+      height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      imageProvider: AssetImage("assets/images/lit.png"),
       icons: [
-        Icons.accessibility
+        Icons.local_fire_department
       ],
       intensity: 0,
       iconDisplay: false
   ),
   Item(
-      name: "name",
-      color: Colors.blue,
+      name: "Logs",
+      color: Colors.transparent,
       height: 0,
-      width: 0.2,
-      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      width: 0.25,
+      imageProvider: AssetImage("assets/images/log.png"),
       icons: [
-        Icons.accessibility,
-        Icons.abc,
-        Icons.abc,
-        Icons.abc,
       ],
       intensity: 0,
       iconDisplay: false
   ),
   Item(
-      name: "name",
+      name: "Branches",
+      color: Colors.transparent,
+      height: 0.25,
+      width: 0,
+      imageProvider: AssetImage("assets/images/branch.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Salt",
+      color: Colors.yellow,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/jaune.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Hand sanitizer",
       color: Colors.blue,
       height: 0,
       width: 0,
-      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      imageProvider: AssetImage("assets/images/bleu.png"),
       icons: [
-        Icons.accessibility,
-        Icons.abc,
-        Icons.abc,
-        Icons.abc,
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Landry",
+      color: Colors.green,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/landry-vert.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Lithium battery",
+      color: Colors.red,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/rouge.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Fertilizer",
+      color: Colors.purple,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/violet.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "Air",
+      color: Colors.transparent,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/r.png"),
+      icons: [
       ],
       intensity: 1,
       iconDisplay: false
+  ),
+  Item(
+      name: "Are you sure about that ?",
+      color: Colors.transparent,
+      height: 40,
+      width: 25,
+      imageProvider: AssetImage("assets/images/boom.png"),
+      icons: [
+      ],
+      intensity: 75,
+      iconDisplay: false
+  ),
+  Item(
+      name: "You already know",
+      color: Colors.pink,
+      height: 1,
+      width: 1,
+      imageProvider: AssetImage("assets/images/cursed.png"),
+      icons: [
+      ],
+      intensity: 0,
+      iconDisplay: false
   )
 ];
+
 
 int randomIntValue(int max) {
   return math.Random().nextInt(max);
