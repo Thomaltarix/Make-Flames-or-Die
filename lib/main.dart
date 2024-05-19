@@ -85,12 +85,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      drawer: _buildLeftDrawer(),
-      endDrawer: _buildRightDrawer(),
-      body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavBar(),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: _buildAppBar(),
+          drawer: _buildLeftDrawer(),
+          endDrawer: _buildRightDrawer(),
+          body: _buildBody(),
+          bottomNavigationBar: _buildBottomNavBar(),
+        ),
+      ],
     );
   }
 
