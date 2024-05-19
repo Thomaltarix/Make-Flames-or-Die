@@ -191,6 +191,13 @@ class MenuListItem extends StatelessWidget {
     required this.imageProvider
   });
   final ImageProvider imageProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      image: imageProvider,
+    );
+  }
 }
 
 class DraggingListItem extends StatelessWidget {
@@ -202,6 +209,20 @@ class DraggingListItem extends StatelessWidget {
 
   final GlobalKey dragKey;
   final ImageProvider imageProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionalTranslation(
+      translation: const Offset(-0.5, -0.5),
+      child: ClipRRect(
+        key: dragKey,
+        borderRadius: BorderRadius.circular(12),
+        child: Image(
+          image: imageProvider
+        )
+      ),
+    );
+  }
 }
 
 class Lexic {
