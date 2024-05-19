@@ -7,19 +7,19 @@ List<Item> itemList = [
       name: "name",
       color: Colors.blue,
       height: 0.2,
-      width: 4,
+      width: 0,
       imageProvider: AssetImage("assets/images/welcome_rick.png"),
       icons: [
         Icons.accessibility
       ],
-      intensity: 5,
+      intensity: 0,
       iconDisplay: false
   ),
   Item(
       name: "name",
       color: Colors.blue,
-      height: 4,
-      width: 4,
+      height: 0,
+      width: 0.2,
       imageProvider: AssetImage("assets/images/welcome_rick.png"),
       icons: [
         Icons.accessibility,
@@ -27,7 +27,22 @@ List<Item> itemList = [
         Icons.abc,
         Icons.abc,
       ],
-      intensity: 5,
+      intensity: 0,
+      iconDisplay: false
+  ),
+  Item(
+      name: "name",
+      color: Colors.blue,
+      height: 0,
+      width: 0,
+      imageProvider: AssetImage("assets/images/welcome_rick.png"),
+      icons: [
+        Icons.accessibility,
+        Icons.abc,
+        Icons.abc,
+        Icons.abc,
+      ],
+      intensity: 1,
       iconDisplay: false
   )
 ];
@@ -35,7 +50,6 @@ List<Item> itemList = [
 void main() {
   runApp(const MyApp());
 }
-
 
 
 class MyApp extends StatelessWidget {
