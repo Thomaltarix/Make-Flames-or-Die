@@ -1,11 +1,13 @@
+import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jam/myFlame.dart';
+import 'dart:math' as math;
 
 List<Item> itemList = [
   Item(
       name: "name",
-      color: Colors.blue,
+      color: Colors.transparent,
       height: 0.2,
       width: 0,
       imageProvider: AssetImage("assets/images/welcome_rick.png"),
@@ -47,6 +49,10 @@ List<Item> itemList = [
   )
 ];
 
+int randomIntValue(int max) {
+  return math.Random().nextInt(max);
+}
+
 void main() {
   runApp(const MyApp());
 }
@@ -81,7 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Lexic lexic = Lexic();
 
   double acceptedData = 0;
-  final MyGame myGame = MyGame();
+  final MyGame myGame = MyGame(1,  1, Colors.red, 3);
+  final MyGame result = MyGame(randomValueBetween(0.5, 5), randomValueBetween(0.5, 5), Color.fromARGB(255, randomIntValue(255), randomIntValue(255), randomIntValue(255)), randomIntValue(4) + 1);
 
   @override
   Widget build(BuildContext context) {
@@ -178,25 +185,38 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildBody() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
-      width: MediaQuery.of(context).size.width,
-      child: DragTarget<Item>(
-        builder: (
+    return Stack(
+      children: [
+      SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        width: MediaQuery.of(context).size.width,
+        child: DragTarget<Item>(
+          builder: (
             BuildContext context,
             List<dynamic> accepted,
             List<dynamic> rejected,
-            ) {
-          return GameWidget<MyGame>(
-            game: myGame,
-          );
-        },
-        onAcceptWithDetails: (DragTargetDetails<Item> item) {
-          setState(() {
-            _updateStats(item);
-          });
-        },
-      )
+          ) {
+            return GameWidget<MyGame>(
+              game: myGame,
+            );
+          },
+            onAcceptWithDetails: (DragTargetDetails<Item> item) {
+              setState(() {
+                _updateStats(item);
+              });
+            },
+          )
+        ),
+        Container(
+          color: Colors.deepOrange.withOpacity(1),
+          height: MediaQuery.of(context).size.height * 0.3 + 1,
+          width: MediaQuery.of(context).size.width * 0.3 + 1,
+
+          child: GameWidget<MyGame>(
+            game: result,
+          ),
+        )
+      ],
     );
   }
 
@@ -248,11 +268,12 @@ class _MyHomePageState extends State<MyHomePage> {
     myGame.flame.height += item.data.height;
     myGame.flame.width += item.data.width;
     myGame.flame.intensity += item.data.intensity;
-
-    int red = (myGame.flame.color.red + item.data.color.red) ~/ 2;
-    int green = (myGame.flame.color.green + item.data.color.green) ~/ 2;
-    int blue = (myGame.flame.color.blue + item.data.color.blue) ~/ 2;
-    myGame.flame.color =  Color.fromARGB(255, red, green, blue);
+    if (item.data.color != Colors.transparent) {
+      int red = (myGame.flame.color.red + item.data.color.red) ~/ 2;
+      int green = (myGame.flame.color.green + item.data.color.green) ~/ 2;
+      int blue = (myGame.flame.color.blue + item.data.color.blue) ~/ 2;
+      myGame.flame.color =  Color.fromARGB(255, red, green, blue);
+    }
   }
 }
 
