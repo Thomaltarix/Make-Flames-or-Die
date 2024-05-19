@@ -191,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
             game: myGame,
           );
         },
-        onAcceptWithDetails: (DragTargetDetails<Item> item) { // Used to modify the Landry's algorithm values
+        onAcceptWithDetails: (DragTargetDetails<Item> item) {
           setState(() {
             _updateStats(item);
           });
