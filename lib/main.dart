@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildLeftDrawer() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.4,
       height: MediaQuery.of(context).size.height,
       child: Drawer(
         child: ListView(
