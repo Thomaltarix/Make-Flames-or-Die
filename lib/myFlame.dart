@@ -26,10 +26,13 @@ Vector2 applyRandomnessVector2(Vector2 value, double randomness) {
 class MyGame extends FlameGame {
   late Flame flame;
 
+  MyGame(double height, double width, Color color, int intensity) {
+    flame = Flame(height: height, width: width, color: color, intensity: intensity);
+  }
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    flame = Flame(height: 1, width: 1, color: Colors.red, intensity: 5);
   }
 
   @override
